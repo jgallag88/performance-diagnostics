@@ -20,8 +20,10 @@
 # This script can be invoked using the 'estat' command.
 #
 
+from __future__ import print_function
+
 from bcc import BPF
-from time import sleep, time, strftime
+from time import sleep, strftime
 import sys
 import os
 repo_lib_dir = os.path.dirname(__file__) + "/../../lib/"
@@ -29,7 +31,7 @@ if os.path.exists(repo_lib_dir + "bcchelper.py"):
     sys.path.append(repo_lib_dir)
 else:
     sys.path.append("/usr/share/performance-diagnostics/lib/")
-from bcchelper import BCCHelper  # nopep8
+from bcchelper import BCCHelper   # noqa: E402
 
 # define BPF program
 bpf_text = """
@@ -276,6 +278,13 @@ alloc_helper.add_aggregation("average_allocs",
                              BCCHelper.AVERAGE_AGGREGATION, "avg")
 alloc_helper.add_key_type("name")
 
+
+def die(*args, **kwargs):
+    print(sys.argv[0] + ": ", file=sys.stderr, end="")
+    print(*args, file=sys.stderr, **kwargs)
+    exit(1)
+
+
 print(" Tracing enabled... Hit Ctrl-C to end.")
 while (1):
     try:
@@ -289,5 +298,5 @@ while (1):
         print("%-16s\n" % strftime("%D - %H:%M:%S %Z"))
         latency_helper.printall()
         alloc_helper.printall()
-    except e:
+    except Exception as e:
         die(e)
