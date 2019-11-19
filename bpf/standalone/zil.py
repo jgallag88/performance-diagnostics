@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 #
 # Copyright 2019 Delphix. All rights reserved.
 #
@@ -30,7 +30,7 @@ if os.path.exists(repo_lib_dir + "bcchelper.py"):
     sys.path.append(repo_lib_dir)
 else:
     sys.path.append("/usr/share/performance-diagnostics/lib/")
-from bcchelper import BCCHelper  # noqa 
+from bcchelper import BCCHelper  # noqa
 
 # define BPF program
 bpf_text = """
@@ -304,7 +304,7 @@ if (args.collection_sec):
         exit(0)
 
 # Collect data until keyborad interrupt with output for each second
-while (1):
+while True:
     try:
         sleep(60)
     except KeyboardInterrupt:
